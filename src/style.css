@@ -43,7 +43,7 @@ button {
 /* ======================================================= */
 
 body {
-  height: 100vh;
+  min-height: 100dvh;
   display: grid;
   grid-template-rows: 30% 70%;
   font-family: "Roboto", sans-serif;
