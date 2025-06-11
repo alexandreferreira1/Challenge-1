@@ -1,7 +1,7 @@
 import { app, db, collection, getDocs } from "./firebase.js";
 
 // Conferir se o Firebase foi inicializado
-console.log("Firebase app initialized", app);
+// console.log("Firebase app initialized", app);
 
 // Buscando documentos da coleção
 const linksCollection = collection(db, "linksCollection");
@@ -32,9 +32,11 @@ containerHTML.innerHTML = `
 
       </div>
 
-      <div id="buttons">
 
+      <div id="buttons">
+        
       </div>
+      
 
       <p id="footer">Development By Alexandre Ferreira © 2025</p>
 `;
@@ -79,7 +81,7 @@ getDocs(descriptionUser)
 
       // Criando o título (h1)
       const h1 = document.createElement("h1");
-      h1.textContent = data.name; 
+      h1.textContent = data.name;
       infoContainer.appendChild(h1);
 
       // Criando o parágrafo de descrição
