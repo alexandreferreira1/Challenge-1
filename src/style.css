@@ -42,11 +42,14 @@ button {
 
 /* ======================================================= */
 
+html,
 body {
+  min-height: 100vh;
   height: 100dvh;
   display: grid;
   grid-template-rows: 30% 70%;
   font-family: "Roboto", sans-serif;
+  overflow: hidden;
 }
 
 /* IMAGEM DE FUNDO */
