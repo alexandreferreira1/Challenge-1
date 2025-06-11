@@ -4,18 +4,21 @@ import { app, db, collection, getDocs } from "./firebase.js";
 console.log("Firebase app initialized", app);
 
 // Buscando documentos da coleção
-const Links = collection(db, "Links");
+const linksCollection = collection(db, "linksCollection");
+const descriptionUser = collection(db, "descriptionUser");
 
-getDocs(Links)
-  .then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data()); // Exibindo o ID e os dados do documento no console
-    });
-  })
-  .catch((error) => {
-    console.error("Erro ao acessar documentos: ", error);
-  });
+// Exibindo o ID e os dados do documento no console
+// getDocs(linksCollection)
+//   .then((responseFirebase) => {
+//     responseFirebase.forEach((doc) => {
+//       console.log(doc.id, " => ", doc.data());
+//     });
+//   })
+//   .catch((error) => {
+//     console.error("Erro ao acessar documentos: ", error);
+//   });
 
+//   Inserir HTML via JS
 const containerHTML = document.getElementById("container");
 
 containerHTML.innerHTML = `
@@ -26,26 +29,66 @@ containerHTML.innerHTML = `
       />
 
       <div id="info">
-        <h1>Lucas Barque</h1>
-        <p id="description">
-          Engenheiro de software experiente com 9 anos de atuação
-        </p>
+
       </div>
 
       <div id="buttons">
-        <a id="btnFace" href="https://www.facebook.com/" target="_blank"
-          >Facebook</a
-        >
-        <a id="btnInsta" href="https://www.instagram.com/" target="_blank"
-          >Instagram</a
-        >
-        <a id="btnYoutube" href="https://www.youtube.com/" target="_blank"
-          >Youtube</a
-        >
-        <!-- <a id="btnYoutube" href="https://www.youtube.com/" target="_blank"
-          >Youtube</a
-        > -->
+
       </div>
 
       <p id="footer">Development By Alexandre Ferreira © 2025</p>
 `;
+
+// Preencher HTML com os dados do Firebase
+
+// Acessando Links
+getDocs(linksCollection)
+  .then((responseFirebase) => {
+    responseFirebase.forEach((doc) => {
+      const data = doc.data();
+
+      // Criando botões com links
+      const buttonsContainer = document.getElementById("buttons");
+
+      const entries = Object.entries(data); // converte em array de pares chave/valor
+
+      entries.forEach(([nome, url]) => {
+        const link = document.createElement("a");
+
+        link.href = url.startsWith("http") ? url : `https://${url}`;
+        link.textContent = nome;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer"; // boa prática de segurança
+
+        buttonsContainer.appendChild(link);
+      });
+    });
+  })
+  .catch((error) => {
+    console.error("Erro ao acessar documentos: ", error);
+  });
+
+// Acessando info do usuário
+getDocs(descriptionUser)
+  .then((responseFirebase) => {
+    responseFirebase.forEach((doc) => {
+      const data = doc.data();
+
+      // Criando Foto de Perfil e Descrição
+      const infoContainer = document.getElementById("info");
+
+      // Criando o título (h1)
+      const h1 = document.createElement("h1");
+      h1.textContent = data.name; 
+      infoContainer.appendChild(h1);
+
+      // Criando o parágrafo de descrição
+      const p = document.createElement("p");
+      p.id = "description";
+      p.textContent = data.info;
+      infoContainer.appendChild(p);
+    });
+  })
+  .catch((error) => {
+    console.error("Erro ao acessar documentos: ", error);
+  });
